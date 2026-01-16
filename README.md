@@ -8,10 +8,10 @@ Designed to integrate with `erp-city` and `erp-city-client`:
 
 ## Install
 
-Local development (recommended in monorepo-style):
+Install from npm:
 
 ```bash
-npm install ../erp-city-vue-components
+npm install erp-city-vue-components
 ```
 
 Or add to your app `package.json`:
@@ -19,7 +19,7 @@ Or add to your app `package.json`:
 ```json
 {
   "dependencies": {
-    "erp-city-vue-components": "file:../erp-city-vue-components"
+    "erp-city-vue-components": "^0.1.0"
   }
 }
 ```
@@ -74,7 +74,3 @@ sidebarState.open('cart');
 - State: `authState`, `cartState`, `favoritesState`, `ordersState`, `productsState`, `sidebarState`
 - Composables: `useHandlesFormErrors`
 - Config: `setErpCityUiConfig`, `erpCityUiConfig`
-
-## Notes
-
-See `MIGRATION.md` for extraction and integration steps used in `prosys-lp`.
