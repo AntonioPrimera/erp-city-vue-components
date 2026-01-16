@@ -1,0 +1,20 @@
+{
+  "name": "erp-city-vue-components",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./components/*": "./src/components/*.vue",
+    "./state/*": "./src/state/*.js",
+    "./composables/*": "./src/composables/*.js"
+  },
+  "files": [
+    "src"
+  ],
+  "peerDependencies": {
+    "axios": "^1.0.0",
+    "vue": "^3.0.0",
+    "ziggy-js": "^2.0.0"
+  }
+}
