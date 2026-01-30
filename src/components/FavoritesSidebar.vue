@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import FavoriteProductCard from './FavoriteProductCard.vue';
 import { favoritesState } from '../state/favoritesState.js';
 import { productsState } from '../state/productsState.js';
@@ -18,6 +18,18 @@ onMounted(() => {
         favoritesState.fetchFavorites();
     }
 });
+
+watch(
+    () => favoritesState.ids.length,
+    (count) => {
+        if (!count) {
+            return;
+        }
+
+        productsState.ensureLoaded();
+    },
+    { immediate: true },
+);
 </script>
 
 <template>
