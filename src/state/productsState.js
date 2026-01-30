@@ -4,8 +4,6 @@ import { route } from 'ziggy-js';
 
 export const productsState = reactive({
     products: [],
-    loading: false,
-    error: null,
     loaded: false,
 
     getProduct(id) {
@@ -13,37 +11,21 @@ export const productsState = reactive({
     },
 
     async loadProducts() {
-        this.loading = true;
-        this.error = null;
-
-        try {
-            const { data } = await axios.get(route('products.index'));
-            this.products = Array.isArray(data) ? data : [];
-            this.loaded = true;
-        } catch (error) {
-            this.error = error?.response?.data?.message || 'Nu am putut încărca produsele.';
-            throw error;
-        } finally {
-            this.loading = false;
-        }
+        const { data } = await axios.get(route('products.index'));
+        this.products = Array.isArray(data) ? data : [];
+        this.loaded = true;
     },
 
     async ensureLoaded() {
-        if (this.loaded || this.loading) {
+        if (this.loaded) {
             return;
         }
 
-        try {
-            await this.loadProducts();
-        } catch (error) {
-            // Errors are stored on state; callers can check productsState.error.
-        }
+        await this.loadProducts();
     },
 
     reset() {
         this.products = [];
-        this.loading = false;
-        this.error = null;
         this.loaded = false;
     },
 });

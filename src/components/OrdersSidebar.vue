@@ -2,6 +2,7 @@
 import { computed, onMounted } from 'vue';
 import { ordersState } from '../state/ordersState.js';
 import { sidebarState } from '../state/sidebarState.js';
+import { route } from "ziggy-js";
 
 const orders = computed(() => ordersState.orders);
 const isLoading = computed(() => ordersState.loading);
