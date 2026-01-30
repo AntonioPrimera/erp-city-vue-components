@@ -83,10 +83,10 @@ onMounted(() => {
                         :key="`${order.id}-${index}`"
                         class="flex items-center justify-between"
                     >
-                        <div>
+                        <a class="underline" :href="route('shop.products.show', item.product_id)">
                             {{ item.name || 'Produs' }}
                             <span v-if="item.quantity">({{ item.quantity }} buc)</span>
-                        </div>
+                        </a>
                         <div>
                             {{ formatCurrency(item.price * item.quantity, item.currency || order.currency) }}
                         </div>
