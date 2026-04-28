@@ -52,6 +52,15 @@ function applyAuthHeader(token, tokenType = 'Bearer') {
     }
 }
 
+function persistCurrentAuthState(state) {
+    persistAuth({
+        user: state.user,
+        token: state.token,
+        token_type: state.tokenType,
+        expires_at: state.expiresAt,
+    });
+}
+
 function isTokenExpired(expiresAt) {
     if (! expiresAt) {
         return false;
@@ -130,6 +139,21 @@ export const authState = reactive({
         ordersState.reset();
     },
 
+    syncUser(userPayload) {
+        if (! userPayload || typeof userPayload !== 'object') {
+            return null;
+        }
+
+        this.user = {
+            ...(this.user ?? {}),
+            ...userPayload,
+        };
+
+        persistCurrentAuthState(this);
+
+        return this.user;
+    },
+
     async bootstrap() {
         try {
             const { data } = await axios.get(route('erp.auth.session'));
@@ -184,6 +208,30 @@ export const authState = reactive({
         } finally {
             this.status = 'idle';
             this.clearAuth();
+        }
+    },
+
+    async fetchProfile() {
+        const { data } = await axios.get(route('erp.auth.me'));
+        const profile = data?.data ?? null;
+
+        return this.syncUser(profile);
+    },
+
+    async updateProfile(payload) {
+        this.status = 'loading';
+        this.error = null;
+
+        try {
+            const { data } = await axios.put(route('erp.auth.update'), payload);
+            const profile = data?.data ?? null;
+
+            return this.syncUser(profile);
+        } catch (error) {
+            this.error = error.response?.data?.message || 'Actualizarea profilului a eșuat.';
+            throw error;
+        } finally {
+            this.status = 'idle';
         }
     },
 });

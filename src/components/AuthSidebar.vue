@@ -136,6 +136,11 @@ function viewOrders() {
     sidebarState.open('orders');
 }
 
+function editProfile() {
+    sidebarState.setHeader('Modifică datele contului', true);
+    sidebarState.open('edit-profile');
+}
+
 async function onLogout() {
     await authState.logout();
     sidebarState.close();
@@ -208,10 +213,15 @@ async function onLogout() {
 
         <template v-else>
             <div class="h-full flex flex-col">
-                <div class="-mt-10 mb-4">
-                    <p class="text-sm text-gray-500 mb-1">Ești autentificat ca</p>
-                    <p class="text-lg font-semibold">{{ authState.user?.name || [authState.user?.first_name, authState.user?.last_name].filter(Boolean).join(' ') }}</p>
-                    <p class="text-gray-700">{{ authState.user?.email }}</p>
+                <div class="-mt-10 mb-4 flex items-start justify-between gap-4">
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">Ești autentificat ca</p>
+                        <p class="text-lg font-semibold">{{ authState.user?.name || [authState.user?.first_name, authState.user?.last_name].filter(Boolean).join(' ') }}</p>
+                        <p class="text-gray-700">{{ authState.user?.email }}</p>
+                    </div>
+                    <button type="button" class="text-primary underline text-sm shrink-0" @click="editProfile">
+                        Modifică datele contului
+                    </button>
                 </div>
 
                 <div v-if="showFavorites" class="flex items-center justify-between  pb-8 pt-8 border-b border-b-neutral-200">

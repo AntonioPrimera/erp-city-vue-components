@@ -7,6 +7,7 @@ import CartDetails from "./CartDetails.vue";
 import OrderConfirmation from "./OrderConfirmation.vue";
 import PaymentOrderConfirmation from "./PaymentOrderConfirmation.vue";
 import AuthSidebar from "./AuthSidebar.vue";
+import EditProfile from "./EditProfile.vue";
 import FavoritesSidebar from "./FavoritesSidebar.vue";
 import OrdersSidebar from "./OrdersSidebar.vue";
 </script>
@@ -56,6 +57,9 @@ import OrdersSidebar from "./OrdersSidebar.vue";
 
         <auth-sidebar v-else-if="sidebarState.currentView === 'auth'"
         ></auth-sidebar>
+
+        <edit-profile v-else-if="sidebarState.currentView === 'edit-profile'"
+        ></edit-profile>
 
         <favorites-sidebar v-else-if="erpCityUiConfig.showFavorites && sidebarState.currentView === 'favorites'"
         ></favorites-sidebar>

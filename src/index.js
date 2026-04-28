@@ -2,6 +2,7 @@ export { default as Sidebar } from './components/Sidebar.vue';
 export { default as CartButton } from './components/CartButton.vue';
 export { default as AuthButton } from './components/AuthButton.vue';
 export { default as AuthSidebar } from './components/AuthSidebar.vue';
+export { default as EditProfile } from './components/EditProfile.vue';
 export { default as OrdersSidebar } from './components/OrdersSidebar.vue';
 export { default as FavoritesSidebar } from './components/FavoritesSidebar.vue';
 export { default as CartDetails } from './components/CartDetails.vue';
