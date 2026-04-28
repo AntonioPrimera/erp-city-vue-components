@@ -1,5 +1,6 @@
 <script setup>
-import { cartState, sidebarState } from "erp-city-vue-components";
+import { cartState } from '../state/cartState.js';
+import { sidebarState } from '../state/sidebarState.js';
 
 const cartIconSrc = '/img/icons/cart.svg';
 </script>

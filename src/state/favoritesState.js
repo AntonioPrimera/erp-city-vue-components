@@ -13,6 +13,7 @@ function normalizeFavoriteId(favorite) {
 export const favoritesState = reactive({
     ids: [],
     loading: false,
+    loaded: false,
     error: null,
 
     isFavorite(productId) {
@@ -22,18 +23,21 @@ export const favoritesState = reactive({
     setFavorites(favorites = []) {
         if (! Array.isArray(favorites)) {
             this.ids = [];
+            this.loaded = true;
             return;
         }
 
         this.ids = favorites
             .map(normalizeFavoriteId)
             .filter(id => Number.isInteger(id) && id > 0);
+        this.loaded = true;
     },
 
     reset() {
         this.ids = [];
         this.error = null;
         this.loading = false;
+        this.loaded = false;
     },
 
     async fetchFavorites() {

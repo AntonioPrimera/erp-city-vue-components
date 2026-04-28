@@ -5,21 +5,25 @@ import { route } from 'ziggy-js';
 export const ordersState = reactive({
     orders: [],
     loading: false,
+    loaded: false,
     error: null,
 
     setOrders(orders = []) {
         if (! Array.isArray(orders)) {
             this.orders = [];
+            this.loaded = true;
             return;
         }
 
         this.orders = orders;
+        this.loaded = true;
     },
 
     reset() {
         this.orders = [];
         this.error = null;
         this.loading = false;
+        this.loaded = false;
     },
 
     async fetchOrders() {

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { authState } from '../state/authState.js';
 import { favoritesState } from '../state/favoritesState.js';
 import { ordersState } from '../state/ordersState.js';
@@ -19,6 +19,8 @@ const isLoadingFavorites = computed(() => favoritesState.loading);
 const isLoadingOrders = computed(() => ordersState.loading);
 const showFavorites = computed(() => erpCityUiConfig.showFavorites);
 const showOrders = computed(() => erpCityUiConfig.showOrders);
+const favoritesCount = computed(() => favoritesState.loaded ? favoritesState.ids.length : '...');
+const ordersCount = computed(() => ordersState.loaded ? ordersState.orders.length : '...');
 
 const sidebarTitle = computed(() => {
     if (authState.isAuthenticated) {
@@ -33,6 +35,33 @@ watch(sidebarTitle, (title) => {
 });
 
 sidebarState.setHeader(sidebarTitle.value, false);
+
+function loadAccountSummary() {
+    if (! authState.isAuthenticated) {
+        return;
+    }
+
+    if (showFavorites.value && ! favoritesState.loaded && ! favoritesState.loading) {
+        favoritesState.fetchFavorites();
+    }
+
+    if (showOrders.value && ! ordersState.loaded && ! ordersState.loading) {
+        ordersState.fetchOrders();
+    }
+}
+
+onMounted(() => {
+    loadAccountSummary();
+});
+
+watch(
+    () => authState.isAuthenticated,
+    (isAuthenticated) => {
+        if (isAuthenticated) {
+            loadAccountSummary();
+        }
+    }
+);
 
 function resetForm() {
     form.value = {
@@ -189,7 +218,7 @@ async function onLogout() {
                     <h4 class="text-lg font-semibold">
                         Produse favorite
                         <span class="text-neutral-400 font-normal">
-                            ({{ favoritesState.ids.length }})
+                            ({{ favoritesCount }})
                         </span>
                     </h4>
                     <button type="button" class="text-primary underline" @click="viewFavorites" :disabled="isLoadingFavorites">
@@ -201,7 +230,7 @@ async function onLogout() {
                     <h4 class="text-lg font-semibold">
                         Comenzile mele
                         <span class="text-neutral-400 font-normal">
-                            ({{ ordersState.orders.length }})
+                            ({{ ordersCount }})
                         </span>
                     </h4>
                     <button type="button" class="text-primary underline" @click="viewOrders" :disabled="isLoadingOrders">
