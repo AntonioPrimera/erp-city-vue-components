@@ -20,6 +20,7 @@ const addressData = reactive({
 let loading = ref(false);
 const cardPaymentsEnabled = ref(true);
 const paymentType = ref(cardPaymentsEnabled.value ? 'card' : 'on_delivery');
+const transportType = ref('pickup');
 const paymentMethodsLoaded = ref(false);
 const hasPrefilledFromProfile = ref(false);
 const isPrefillingProfile = ref(false);
@@ -31,6 +32,7 @@ const profileFieldMap = {
     company: "company",
 };
 const showCompany = computed(() => erpCityUiConfig.showCompany);
+const showTransportType = computed(() => erpCityUiConfig.showTransportType);
 
 watch(addressData, (newData) => {
     localStorage.setItem('addressData', JSON.stringify(newData));
@@ -76,6 +78,7 @@ function confirmOrder() {
         ...addressData,
         items: cartState.items,
         payment_type: cartState.price ? paymentType.value : null,
+        transport_type: showTransportType.value ? transportType.value : null,
         coupon_code: cartState.coupon?.code ?? null,
     })
         .then((response) => {
@@ -232,6 +235,52 @@ async function loadPaymentMethods() {
                     </svg>
                 </div>
                 <div class="font-medium text-lg lg:text-xl">Ramburs</div>
+            </div>
+        </div>
+    </div>
+
+    <div v-if="showTransportType" class="mt-8">
+        <div class="font-medium text-lg lg:text-xl mb-4">Selectează mod livrare</div>
+
+        <div class="space-y-4 lg:space-y-6">
+            <div
+                class="border border-primary p-7 rounded-xl flex items-center cursor-pointer"
+                :class="{ 'bg-primary/5': transportType === 'pickup' }"
+                @click="transportType = 'pickup'"
+            >
+                <div class="mr-5.5">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="11.25" fill="white" stroke="#2F5233" stroke-width="1.5"/>
+                        <circle
+                            cx="12.0007"
+                            cy="12"
+                            r="6.66667"
+                            :fill="transportType === 'pickup' ? '#2F5233' : 'white'"
+                            :stroke="transportType === 'pickup' ? '#2F5233' : 'white'"
+                        />
+                    </svg>
+                </div>
+                <div class="font-medium text-lg lg:text-xl">Ridicare</div>
+            </div>
+
+            <div
+                class="border border-primary p-7 rounded-xl flex items-center cursor-pointer"
+                :class="{ 'bg-primary/5': transportType === 'delivery' }"
+                @click="transportType = 'delivery'"
+            >
+                <div class="mr-5.5">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="11.25" fill="white" stroke="#2F5233" stroke-width="1.5"/>
+                        <circle
+                            cx="12.0007"
+                            cy="12"
+                            r="6.66667"
+                            :fill="transportType === 'delivery' ? '#2F5233' : 'white'"
+                            :stroke="transportType === 'delivery' ? '#2F5233' : 'white'"
+                        />
+                    </svg>
+                </div>
+                <div class="font-medium text-lg lg:text-xl">Transport curier</div>
             </div>
         </div>
     </div>

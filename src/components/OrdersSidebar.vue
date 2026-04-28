@@ -104,6 +104,10 @@ onMounted(() => {
                     <span class="font-medium">Plată: </span>
                     {{ order.payment_type?.label || '-' }}
                 </div>
+                <div v-if="order.transport_type?.label" class="text-sm text-neutral-600 mt-2">
+                    <span class="font-medium">Mod livrare: </span>
+                    {{ order.transport_type.label }}
+                </div>
 
                 <div class="mt-3 text-sm text-neutral-600 space-y-1">
                     <div class="flex items-center justify-between">
